@@ -66,7 +66,7 @@ const createClient = (client) => {
 
 // Linha tr criada, preenchida com os dados e apresentada no tbody
 
-const createRow = (client) => {
+const createRow = (client, index) => {
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
     <td>${client.nome}</td>
@@ -75,10 +75,10 @@ const createRow = (client) => {
     <td>${client.cidade}</td>
 
     <td>
-        <button type="button" class="button yellow">editar</button>
-        <button type="button" class="button red">excluir</button>
+        <button type="button" class="button yellow" id="edit-${index}" data-action="edit-${index}">Editar</button>
+        <button type="button" class="button red" id="delete-${index}" data-action="delete-${index}">Excluir</button>
     </td>
-    `
+    ` // Escolher qual atributo usar na função editDelete (id ou data), e cada um com o index do botão
     // Dados guardados na memória
 
     // Apresentar os dados do newRow inserindo no elemento pai o newRow
@@ -101,13 +101,6 @@ const updateTable = () => {
 updateTable();
 
 
-// ====== Eventos para abrir e fechar o modal =======
-
-document.getElementById('cadastrarCliente')
-    .addEventListener('click', openModal)
-
-document.getElementById('modalClose')
-    .addEventListener('click', closeModal)
 
 
 
@@ -132,7 +125,7 @@ const saveClient = () => {
             celular: document.getElementById('mobile').value,
             cidade: document.getElementById('city').value
         }
-
+        
         createClient(client)
         updateTable();
         closeModal();
@@ -140,5 +133,23 @@ const saveClient = () => {
     }
 }
 
+const editDelete = (event) => {
+    if(event.target.type == 'button')
+    // posso utilizar o atributo data ou o id
+    console.log(event.target.dataset.action);
+    console.log(event.target.id);
+}
 
-document.getElementById('salvar').addEventListener('click', saveClient)
+// ====== Eventos =======
+
+document.getElementById('cadastrarCliente')
+    .addEventListener('click', openModal);
+
+document.getElementById('modalClose')
+    .addEventListener('click', closeModal);
+
+document.getElementById('salvar')
+    .addEventListener('click', saveClient);
+
+document.querySelector('#tableClient>tbody')
+    .addEventListener('click', editDelete);
