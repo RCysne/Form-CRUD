@@ -26,9 +26,12 @@ const closeModal = () => {
 // },
 // ]
 
-// Funções
+// Funções para o database
 const getLocal = () => JSON.parse(localStorage.getItem('db_client') || '[]');
 const setLocal = (dbClient) => localStorage.setItem('db_client', JSON.stringify(dbClient));
+
+
+
 
 // 4 - DELETE
 const deleteClient = (index) => {
@@ -37,6 +40,9 @@ const deleteClient = (index) => {
     setLocal(dbClient); // Atualiza o banco
 } 
 
+
+
+
 // 3 - UPDATE
 const updateClient = (index, client) => {
     const dbClient = readClient();
@@ -44,8 +50,13 @@ const updateClient = (index, client) => {
     setLocal(dbClient) // Atualiza o banco
 }
 
+
+
 // 2 - READ
 const readClient = () => getLocal(); // Apenas lê 
+
+
+
 
 
 // 1 - CREATE
@@ -62,10 +73,17 @@ const createClient = (client) => {
 }
 
 
+
+
+
+
+
+
+
 // Quando for acionado o updateClient, ele vai ler o que está no banco, fazer um forEach nos index adicionados no updateTable, criar a linha com o elemento html com os devidos valores capturados
 
-// Linha tr criada, preenchida com os dados e apresentada no tbody
 
+// Linha tr criada, preenchida com os dados e apresentada no tbody
 const createRow = (client, index) => {
     const newRow = document.createElement('tr');
     newRow.innerHTML = `
@@ -78,8 +96,11 @@ const createRow = (client, index) => {
         <button type="button" class="button yellow" id="edit-${index}" data-action="edit-${index}">Editar</button>
         <button type="button" class="button red" id="delete-${index}" data-action="delete-${index}">Excluir</button>
     </td>
-    ` // Escolher qual atributo usar na função editDelete (id ou data), e cada um com o index do botão
+    ` 
+    // Escolher qual atributo usar na função editDelete (id ou data), e cada um com o index do botão
     // Dados guardados na memória
+
+
 
     // Apresentar os dados do newRow inserindo no elemento pai o newRow
     document.querySelector('#tableClient>tbody').appendChild(newRow);
@@ -92,6 +113,9 @@ const clearTable = () => {
     rows.forEach(row => row.parentNode.removeChild(row))
 }
 
+
+
+// Atualizando a tabela
 const updateTable = () => {
     const dbClient = readClient();
     clearTable();
@@ -110,20 +134,25 @@ const isValidFields = () => {
 }
 
 
+
+
 // Limpando os campos
 const clearField = () => {
     const fields = document.querySelectorAll('.modal-field');
     fields.forEach(field => field.value = '');
 }
 
+
+
+
 // Salvando os campos e pegando os valores digitados. depois criando o banco, fechando o modal já com a função de limpar os campos dentro
 const saveClient = () => {
     if(isValidFields()) {
         const client = {
-            nome: document.getElementById('name').value,
+            nome: document.getElementById('name').value.toUpperCase(),
             email: document.getElementById('email').value,
             celular: document.getElementById('mobile').value,
-            cidade: document.getElementById('city').value
+            cidade: document.getElementById('city').value.toUpperCase()
         }
         
         createClient(client)
@@ -133,12 +162,18 @@ const saveClient = () => {
     }
 }
 
+
+
+// Ação dos botões editar e excluir
 const editDelete = (event) => {
     if(event.target.type == 'button')
     // posso utilizar o atributo data ou o id
     console.log(event.target.dataset.action);
     console.log(event.target.id);
 }
+
+
+
 
 // ====== Eventos =======
 
