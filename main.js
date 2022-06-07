@@ -65,6 +65,7 @@ const createClient = (client) => {
 // Quando for acionado o updateClient, ele vai ler o que está no banco, fazer um forEach nos index adicionados no updateTable, criar a linha com o elemento html com os devidos valores capturados
 
 // Linha tr criada, preenchida com os dados e apresentada no tbody
+// Poderia usar em vez da id o ¨data-action¨ em cada elemento - data-action="edit-${index} - data-action="delete-${index}
 
 const createRow = (client, index) => {
     const newRow = document.createElement('tr');
@@ -75,8 +76,8 @@ const createRow = (client, index) => {
     <td>${client.cidade}</td>
 
     <td>
-        <button type="button" class="button yellow" id="edit-${index}" data-action="edit-${index}">Editar</button>
-        <button type="button" class="button red" id="delete-${index}" data-action="delete-${index}">Excluir</button>
+        <button type="button" class="button yellow" id="edit-${index}">Editar</button>
+        <button type="button" class="button red" id="delete-${index}">Excluir</button>
     </td>
     ` // Escolher qual atributo usar na função editDelete (id ou data), e cada um com o index do botão
     // Dados guardados na memória
@@ -125,19 +126,62 @@ const saveClient = () => {
             celular: document.getElementById('mobile').value,
             cidade: document.getElementById('city').value
         }
-        
-        createClient(client)
-        updateTable();
-        closeModal();
-        console.log('Cadastro ok')
+        const index = document.getElementById('name').dataset.index;
+        if(index == 'new') {
+            createClient(client)
+            updateTable();
+            closeModal();
+            console.log('Cadastro ok')
+        } else {
+            updateClient(index, client);
+            updateTable();
+            closeModal();
+            console.log('Editando')
+        }
+
     }
 }
 
+const fillFields = (client) => {
+    document.getElementById('name').value = client.nome;
+    document.getElementById('email').value = client.email;
+    document.getElementById('mobile').value = client.celular;
+    document.getElementById('city').value = client.cidade;
+    document.getElementById('name').dataset.index = client.index;
+}
+
+const editClient = (index) => {
+    const client = readClient()[index]; // Executa a leitura dos clientes, entregando um array e lendo o índice desejado
+    client.index = index
+    console.log(client);
+    fillFields(client);
+    openModal();
+}
+
 const editDelete = (event) => {
-    if(event.target.type == 'button')
-    // posso utilizar o atributo data ou o id
-    console.log(event.target.dataset.action);
-    console.log(event.target.id);
+    if(event.target.type == 'button') {
+        // posso utilizar o atributo data ou o id
+        // console.log(event.target.dataset.action);
+        const [action, index] = event.target.id.split('-');
+        //console.log(action, index);
+
+        if(action == 'edit') {
+            console.log('Editando o cliente ' + index);
+            editClient(index)
+        } else {
+            const client = readClient()[index]
+            const response = confirm(`Deseja realmente excluir o cliente ${client.nome}`);
+            if (response) {
+                deleteClient(index);
+                updateTable();
+            }
+            console.log('Deletando o cliente ' + index);
+        }
+        
+    }
+
+
+    // console.log(event.target.id);
 }
 
 // ====== Eventos =======
