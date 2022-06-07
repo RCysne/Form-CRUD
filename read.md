@@ -1,6 +1,25 @@
-Roteiro Crud
+Roteiro Crud - localStorage
 
-- Create
+* Create
+- Criar as funções para o get(pegar os dados no banco de dados e se não tiver um criar) e para o set (setar os dados no banco) no localStorage, transformando em JSON e String
+- Criar um banco de dados fictício 
+- Criar a função para ler o banco, fazer o push e setar os dados
+
+* Read
+- Criar função com o get para ler o banco
+
+* Update
+- Criar função pegando o index e o parâmetro
+- Variável lendo o banco
+- variável pegando o index recendo o parâmetro daquele index
+- 
+
+
+
+
+
+=============================================================
+* Ex: Create
 
 Ex: Objeto DB
 const list_client = {
