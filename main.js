@@ -1,5 +1,7 @@
 // 'use strict'
 
+
+// Funções para abrir e fechar o modal
 const openModal = () => document.getElementById('modal')
     .classList.add('active')
 
@@ -9,6 +11,9 @@ const closeModal = () => {
     .classList.remove('active')
 
 }
+
+
+
 // ======== CRUD =========
 
 // Armazenamento local (clientes fictício para teste inicial)
@@ -26,7 +31,9 @@ const closeModal = () => {
 // },
 // ]
 
-// Funções
+
+
+// Funções para o manuseio dos dados no localStorage
 const getLocal = () => JSON.parse(localStorage.getItem('db_client') || '[]');
 const setLocal = (dbClient) => localStorage.setItem('db_client', JSON.stringify(dbClient));
 
@@ -197,3 +204,5 @@ document.getElementById('salvar')
 
 document.querySelector('#tableClient>tbody')
     .addEventListener('click', editDelete);
+
+document.querySelector('#cancelar').addEventListener('click', closeModal);
